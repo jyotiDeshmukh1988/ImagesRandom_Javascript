@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>randomImages</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="http://code.jquery.com/jquery-1.12.3.js"></script>
+    <script>
+    var imgs=ranimages(6),
+        last;
+    function ranimages(count){
+        var images=[];
+        for ( var i = 1; i <= count; i++ ) {
+            images.push("images/randheader/" +i + ".jpeg");
+        }
+        return images;
+    }
+    function randomImg_m() {
+        var imgNum_m= Math.floor(Math.random() * imgs.length);
+        while (last===imgNum_m) { // make sure the image is not the same as the last!
+            imgNum_m = Math.floor(Math.random() * imgs.length);
+        }
+        last = imgNum_m;
+        return imgs[imgNum_m];
+    }
+    function loop() {
+        var aRandomImage = randomImg_m();
+        $("<img>").hide().appendTo("#randomheader_image").on("load", function(e) {
+            $("#randomheader_image img:last").fadeIn("slow");
+            $("#randomheader_image img:first").fadeOut("slow",function(){ $(this).remove()})
+        }).on("error",function(e){
+            console.log(" call the web guys this image is missing! " + aRandomImage);
+        }).attr("src",aRandomImage)
+    }
+    </script>
+    <style>
+        #randomheader_image{width:600px;height:400px;position:relative;background:pink}
+        #randomheader_image img{width:100%;height:100%;position:absolute}
+    </style>
+</head>
+<body>
+<div id="randomheader_image">
+    <script>
+    document.write("<img src='" + randomImg_m() + "'>");
+    setInterval(loop, 5000) // every few seconds
+    </script>
+</div>
+
+</body>
+</html>
